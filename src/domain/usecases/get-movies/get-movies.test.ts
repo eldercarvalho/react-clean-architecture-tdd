@@ -1,8 +1,8 @@
 import { right, left } from 'fp-ts/lib/Either';
 import { instance, mock, when, verify, reset } from 'ts-mockito';
-import { ServerFailure } from '@/core/errors';
 import { IMovieRepository } from '@/domain/repositories';
 import { paginatedResultMock } from '@/domain/mocks';
+import { AppError } from '@/domain/errors';
 import { GetMovies } from './get-movies';
 
 const MoviesRespositoryMock = mock<IMovieRepository>();
@@ -22,14 +22,14 @@ describe('GetMovies', () => {
     verify(MoviesRespositoryMock.all()).once();
   });
 
-  it('should return [Failure] on left if data request is unsuccessful', async () => {
+  it('should return an Error on left if data request is unsuccessful', async () => {
     const usecase = new GetMovies(instance(MoviesRespositoryMock));
-    const failure = new ServerFailure();
-    when(MoviesRespositoryMock.all()).thenResolve(left(failure));
+    const error = new AppError();
+    when(MoviesRespositoryMock.all()).thenResolve(left(error));
 
     const result = await usecase.execute();
 
-    expect(result).toStrictEqual(left(failure));
+    expect(result).toStrictEqual(left(error));
     verify(MoviesRespositoryMock.all()).once();
   });
 });

@@ -1,4 +1,3 @@
-import { Failure, ServerFailure } from '@/core/errors';
 import { IHttpService } from '@/data/services';
 import { IMovie, IPaginatedResult } from '@/domain/entities';
 import { IMovieRepository } from '@/domain/repositories';
@@ -8,12 +7,12 @@ export class MovieRepository implements IMovieRepository {
   private readonly path = '/movies/popular';
 
   constructor(private readonly httpService: IHttpService) {}
-  async all(): Promise<Either<Failure, IPaginatedResult<IMovie[]>>> {
+  async all(): Promise<Either<Error, IPaginatedResult<IMovie[]>>> {
     try {
       const result = await this.httpService.getMovies();
       return right(result);
     } catch (e) {
-      return left(new ServerFailure());
+      return left(e as Error);
     }
   }
 }

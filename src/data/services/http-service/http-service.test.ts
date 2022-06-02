@@ -1,5 +1,6 @@
 import { IHttpClient } from '@/data/protocols';
 import { IMovie, IPaginatedResult } from '@/domain/entities';
+import { AppError, NotFoundError, UnauthorizedError } from '@/domain/errors';
 import { paginatedResultMock } from '@/domain/mocks';
 import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
 import { IHttpService } from './http-service';
@@ -13,12 +14,14 @@ class HttpService implements IHttpService {
     const response = await this.httpClient.get<IPaginatedResult<IMovie[]>>('/movie/popular');
 
     switch (response.statusCode) {
-      case 401:
-        throw new Error();
-      case 404:
-        throw new Error();
-      default:
+      case 200:
         return response.data;
+      case 401:
+        throw new UnauthorizedError();
+      case 404:
+        throw new NotFoundError();
+      default:
+        throw new AppError();
     }
   }
 }
@@ -52,7 +55,7 @@ describe('HttpService', () => {
         data: {} as IPaginatedResult<IMovie[]>,
       });
 
-      await expect(httpService.getMovies()).rejects.toThrow(new Error());
+      await expect(httpService.getMovies()).rejects.toThrow(new UnauthorizedError());
     });
 
     it('should throw a UnauthorizedError if request status code is 404', async () => {
@@ -62,7 +65,17 @@ describe('HttpService', () => {
         data: {} as IPaginatedResult<IMovie[]>,
       });
 
-      await expect(httpService.getMovies()).rejects.toThrow(new Error());
+      await expect(httpService.getMovies()).rejects.toThrow(new NotFoundError());
+    });
+
+    it('should throw a AppError if request status code is 500 or other', async () => {
+      const httpService = new HttpService(instance(HttpClientMock));
+      when(HttpClientMock.get<IPaginatedResult<IMovie[]>>(anything())).thenResolve({
+        statusCode: 500,
+        data: {} as IPaginatedResult<IMovie[]>,
+      });
+
+      await expect(httpService.getMovies()).rejects.toThrow(new AppError());
     });
   });
 });
