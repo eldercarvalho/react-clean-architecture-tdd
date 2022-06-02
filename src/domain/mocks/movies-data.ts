@@ -1,4 +1,4 @@
-export const moviesList = [
+export const moviesListMock = [
   {
     poster_path: '/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg',
     adult: false,
@@ -341,9 +341,9 @@ export const moviesList = [
   },
 ];
 
-export const paginatedResult = {
+export const paginatedResultMock = {
   page: 1,
-  results: moviesList,
+  results: moviesListMock,
   total_results: 10,
   total_pages: 10,
 };
