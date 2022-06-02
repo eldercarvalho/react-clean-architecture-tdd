@@ -1,11 +1,11 @@
 import { right, left } from 'fp-ts/lib/Either';
 import { instance, mock, when, verify, reset } from 'ts-mockito';
 import { ServerFailure } from '@/core/errors';
-import { IMoviesRepository } from '@/domain/repositories';
-import { paginatedResult } from '@/domain/mocks';
+import { IMovieRepository } from '@/domain/repositories';
+import { paginatedResultMock } from '@/domain/mocks';
 import { GetMovies } from './get-movies';
 
-const MoviesRespositoryMock = mock<IMoviesRepository>();
+const MoviesRespositoryMock = mock<IMovieRepository>();
 
 describe('GetMovies', () => {
   beforeEach(() => {
@@ -14,22 +14,22 @@ describe('GetMovies', () => {
 
   it('should return [IPaginagedResult] on right if data request is successful', async () => {
     const usecase = new GetMovies(instance(MoviesRespositoryMock));
-    when(MoviesRespositoryMock.getMovies()).thenResolve(right(paginatedResult));
+    when(MoviesRespositoryMock.all()).thenResolve(right(paginatedResultMock));
 
     const result = await usecase.execute();
 
-    expect(result).toStrictEqual(right(paginatedResult));
-    verify(MoviesRespositoryMock.getMovies()).once();
+    expect(result).toStrictEqual(right(paginatedResultMock));
+    verify(MoviesRespositoryMock.all()).once();
   });
 
   it('should return [Failure] on left if data request is unsuccessful', async () => {
     const usecase = new GetMovies(instance(MoviesRespositoryMock));
     const failure = new ServerFailure();
-    when(MoviesRespositoryMock.getMovies()).thenResolve(left(failure));
+    when(MoviesRespositoryMock.all()).thenResolve(left(failure));
 
     const result = await usecase.execute();
 
     expect(result).toStrictEqual(left(failure));
-    verify(MoviesRespositoryMock.getMovies()).once();
+    verify(MoviesRespositoryMock.all()).once();
   });
 });
