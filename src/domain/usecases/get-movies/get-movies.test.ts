@@ -12,7 +12,7 @@ describe('GetMovies', () => {
     reset(MoviesRespositoryMock);
   });
 
-  it('should return [IPaginagedResult] on right if data request is successful', async () => {
+  it('should return IPaginagedResult on right if data request is successful', async () => {
     const usecase = new GetMovies(instance(MoviesRespositoryMock));
     when(MoviesRespositoryMock.all()).thenResolve(right(paginatedResultMock));
 
