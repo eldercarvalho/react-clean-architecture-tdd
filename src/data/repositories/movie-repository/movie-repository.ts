@@ -4,9 +4,8 @@ import { IMovieRepository } from '@/domain/repositories';
 import { Either, left, right } from 'fp-ts/lib/Either';
 
 export class MovieRepository implements IMovieRepository {
-  private readonly path = '/movies/popular';
-
   constructor(private readonly httpService: IHttpService) {}
+
   async all(): Promise<Either<Error, IPaginatedResult<IMovie[]>>> {
     try {
       const result = await this.httpService.getMovies();
