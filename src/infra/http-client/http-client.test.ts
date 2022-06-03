@@ -1,22 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { IHttpClient, IHttpClientResponse } from '@/data/protocols';
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
+import { HttpClient } from './http-client';
 
 const AxiosMock = mock<AxiosInstance>();
-
-class HttpClient implements IHttpClient {
-  constructor(private readonly axiosInstance: AxiosInstance) {}
-
-  async get<T>(path: string): Promise<IHttpClientResponse<T>> {
-    const response = await this.axiosInstance.get(path);
-
-    return {
-      statusCode: response.status,
-      data: response.data,
-    };
-  }
-}
 
 describe('HttpClient', () => {
   const path = faker.internet.url();
