@@ -50,6 +50,7 @@
     "react/function-component-definition": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".ts", ".tsx"] }],
     "import/extensions": [
