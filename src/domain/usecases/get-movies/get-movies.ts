@@ -3,7 +3,9 @@ import { IMovieRepository } from '@/domain/repositories';
 import { Either } from 'fp-ts/lib/Either';
 import { IUsecase } from '@/core';
 
-export class GetMovies implements IUsecase<never, IPaginatedResult<IMovie[]>> {
+export interface IGetMovies extends IUsecase<undefined, IPaginatedResult<IMovie[]>> {}
+
+export class GetMovies implements IGetMovies {
   constructor(private readonly movieRepository: IMovieRepository) {}
 
   async execute(): Promise<Either<Error, IPaginatedResult<IMovie[]>>> {
