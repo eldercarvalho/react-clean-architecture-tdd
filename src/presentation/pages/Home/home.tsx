@@ -7,7 +7,7 @@ type HomeProps = {
   getMovies: IGetMovies; // eslint-disable-line
 };
 
-const Home = ({ getMovies }: HomeProps) => {
+export const Home = ({ getMovies }: HomeProps) => {
   const [movies, setMovies] = useState<IMovie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,5 +39,3 @@ const Home = ({ getMovies }: HomeProps) => {
     </div>
   );
 };
-
-export default Home;

@@ -4,7 +4,7 @@ import { IUsecase } from '@/core';
 import { IMovie, IPaginatedResult } from '@/domain/entities';
 import { paginatedResultMock } from '@/domain/mocks';
 import { right } from 'fp-ts/Either';
-import Home from './home';
+import { Home } from './home';
 
 const MockGetMovies = mock<IUsecase<never, IPaginatedResult<IMovie[]>>>();
 
