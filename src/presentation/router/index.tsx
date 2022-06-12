@@ -1,12 +1,13 @@
-import { makeHomePage } from '@/main/factories/pages/home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const HomePage = makeHomePage();
+type RouterProps = {
+  makeHome: React.FC;
+};
 
-export const Router = () => (
+export const Router = ({ makeHome: MakeHome }: RouterProps) => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={HomePage} />
+      <Route path="/" element={<MakeHome />} />
     </Routes>
   </BrowserRouter>
 );
